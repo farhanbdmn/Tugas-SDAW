@@ -1,0 +1,345 @@
+#include <iostream>
+#include <conio.h>
+#include <iomanip> //setw()
+using namespace std;
+
+//referensi http://www.nblognlife.com/2014/12/single-linked-list-pada-c.html
+//Kelompok : Farhan Budiman ; M. Afrizal Arif
+
+struct node
+{
+      int data;
+      node* next; // untuk menghubungkan dengan node lain, tipe data dibuat sama seperi aturan penggunaan pointer.
+      node* prev;
+};
+
+node* head;
+node* tail;
+node* curr;
+node* entry;
+node* del;
+node* prev;
+node* temporary;
+
+void inisialisasi ()
+{
+      head = NULL;
+      tail = NULL;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void tambahdepan (int dt) {
+	entry = new node;
+    entry -> data = dt;
+    entry -> next = NULL;
+    entry->prev = NULL;
+    
+	if (head == NULL) {
+    	head = entry;
+    	tail = entry;
+	}
+	else {
+		entry -> next = head;
+		head->prev = entry;
+    	head = entry;
+	}
+}
+
+void tambahtengah (int letak, int dt) {
+	entry = new node;
+	curr = head;
+	
+	for (int x=1; x<letak; x++) {
+		prev = curr;
+		curr = curr->next;
+	}
+	entry -> data = dt;
+	prev -> next = entry;	
+	entry -> next = curr;
+	curr -> prev = entry;
+	entry -> prev = prev;
+}
+
+void tambahbelakang (int dt) {
+      entry = new node; //alokasi memori
+      entry -> data = dt;
+      entry -> next = NULL;
+      entry -> prev = NULL;
+      
+      if (head==NULL) {
+        head = entry;
+        tail = entry;
+      }
+      else {
+            tail -> next = entry;
+            entry->prev = tail;
+            tail = entry;
+      }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void hapusdepan () {
+	
+	if (head==NULL) {
+		cout<<endl;
+		cout<<"Maaf data kosong, penghapusan data tidak bisa dilakukan"<<endl;
+    }
+    else{
+		temporary = head;
+		head = head -> next;
+		head -> prev = NULL;
+		temporary -> next = NULL;
+		delete temporary;
+	}
+}
+
+void hapustengah (int letak) {
+
+	if (head==NULL) {
+		cout<<endl;
+		cout<<"Maaf data kosong, penghapusan data tidak bisa dilakukan"<<endl;
+	}
+
+    else {
+    	curr = head;
+    	
+		for (int x=1; x<letak; x++) {
+		prev = curr;
+		curr = curr -> next;
+		}
+		
+		temporary = curr -> next;
+		prev -> next = temporary;
+		temporary -> prev = prev;
+		curr -> next = NULL;
+		curr -> prev = NULL;
+		delete curr;
+	}
+}
+
+void hapusbelakang () {
+	
+	if (head==NULL) {
+		cout<<endl;
+		cout<<"Maaf data kosong, penghapusan data tidak bisa dilakukan"<<endl;
+	}
+	
+    else {
+		curr = head;
+		
+		while (curr -> next!=NULL) {
+		prev = curr;
+		curr = curr -> next;	
+		}
+		tail = prev;
+		curr -> prev = NULL;
+		tail -> next = NULL;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void ubahdepan (int dt ) {
+	
+	if (head==NULL) {
+		cout<<endl;
+		cout<<"Maaf data kosong, perubahan data tidak bisa dilakukan"<<endl;
+    }
+    
+    else {
+    	head -> data = dt;
+	}
+}
+
+void ubahtengah (int letak, int dt) {
+	node *current = new node;
+	node *previous = new node;
+	current = head;
+	
+	for( int x=1; x<letak; x++) {
+		current = current -> next;
+	}
+	current -> data = dt;
+}
+
+void ubahbelakang (int dt) {
+	
+	if (head==NULL) {
+		cout<<endl;
+		cout<<"Maaf data kosong, perubahan data tidak bisa dilakukan"<<endl;
+    }
+    else {
+    	tail -> data = dt;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void cetakdepan () {
+	
+	if (head == NULL)
+        cout<<"\n Maaf tidak ada data yang bisa di cetak"<<endl;
+    else{
+    	cout<<"\nData pertama adalah : " << head -> data << endl;
+	}
+}
+
+void cetaktengah (int letak) {
+	
+	if (head == NULL)
+        cout<<"\n Maaf tidak ada data yang bisa di cetak"<<endl;
+    else {
+    	cout<<"\nData ke-"<<letak<<" adalah : ";
+		curr = head;
+		
+		for (int x=1; x<letak; x++) {
+			curr = curr -> next;
+		}
+		cout << curr -> data << endl;
+	}
+	
+}
+
+void cetakbelakang() {
+	
+	if (head == NULL)
+        cout << "\n Maaf tidak ada data yang bisa di cetak"<<endl;
+    else {
+    	cout << "\n Data terakhir adalah : " << tail -> data << endl;
+	}
+}
+
+void cetak(){
+	
+	temporary = head;
+	
+	if (head == NULL)
+        cout<<"\ntidak ada data dalam linked list"<<endl;
+    else {
+    	cout<<"\nData yang ada dalam linked list adalah"<<endl;
+		cout<<"NULL <-> ";
+		while (temporary!=NULL) {
+			cout<<temporary -> data<<" <-> ";
+			temporary = temporary -> next;
+		}
+		cout<<"NULL";
+        cout<<endl;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void menu () {
+	char ulang;
+    int data, pilih, letak;
+
+    do {
+    	
+    	system("cls");
+    	cout<<"-------------------------------"<<endl;
+    	cout<<"DOUBLE LINKED LIST NON CIRCULAR"<<endl;
+      	cout<<"-------------------------------"<<endl;
+		cout<<"1. Tambah Data Depan"<<endl;
+      	cout<<"2. Tambah Data Belakang"<<endl;
+      	cout<<"3. Tambah Data Tengah"<<endl;
+      	cout<<"4. Hapus Data Tengah"<<endl;
+      	cout<<"5. Hapus Data Depan"<<endl;
+      	cout<<"6. Hapus Data Belakang"<<endl;
+      	cout<<"7. Ubah Data Depan"<<endl;
+      	cout<<"8. Ubah Data Tengah"<<endl;
+      	cout<<"9. Ubah Data Belakang"<<endl;
+      	cout<<"10. Cetak Data Depan"<<endl;
+      	cout<<"11. Cetak Data Tengah"<<endl;
+      	cout<<"12. Cetak Data Belakang"<<endl;
+      	cout<<"13. Cetak Data Seluruh Data"<<endl;
+      	cout<<"14. Exit"<<endl <<endl;
+      	cout<<"Input pilihan Anda : ";
+      	cin>>pilih;
+
+      	switch (pilih) {
+      		case 1 :
+      			cout<<endl;
+		    	cout<<"input data : ";
+		        cin>>data;
+		        tambahdepan(data);
+		        break;
+		    case 2 :
+		    	cout<<endl;
+				cout<<"Input data : "; cin>>data;
+            	tambahbelakang(data);
+            	break;
+      		case 3 :
+    			cout<<endl;
+				cout<<"Input data : "; cin>>data;
+				cout<<endl;
+		        cout<<"Di posisi ke : "; cin>>letak;
+		        tambahtengah(letak, data);
+		        break;
+      		case 4 :
+      			cout<<endl;
+            	cout<<"Di posisi ke : "; cin>>letak;
+            	hapustengah(letak);
+            	break;
+            case 5 :
+            	hapusdepan();
+            	break;
+            case 6 :
+            	hapusbelakang();
+            	break;
+            case 7 :
+            	cout<<endl;
+		    	cout<<"Input data baru : "; cin>>data;
+		        ubahdepan(data);
+		        break;
+		    case 8 :
+		    	cout<<endl;
+		    	cout<<"Input data baru : "; cin>>data;
+		    	cout<<"Di posisi ke : "; cin>>letak;
+		        ubahtengah(letak, data);
+		        break;
+		    case 9 :
+		    	cout<<endl;
+		    	cout<<"Input data baru : ";
+		        cin>>data;
+		        ubahbelakang(data);
+		        break;
+            case 10 :
+            	cetakdepan();
+            	break;
+            case 11 :
+            	cout<<endl;
+            	cout<<"Tampilkan data pada posisi ke : "; cin>>letak;
+            	cetaktengah(letak);
+            	break;
+            case 12 :
+            	cetakbelakang();
+            	break;
+            case 13 :
+            	cetak();
+            	break;
+      		case 14 :
+            	exit(0);
+            	break;
+      		default :
+      			cout<<endl;
+            	cout<<"Pilih ulang"<<endl;
+		}
+		
+		cout<<endl;
+      	cout<<"Kembali ke menu? (y/n)";
+      	cin>>ulang;
+      	
+	} while (ulang=='y' || ulang=='Y');
+}
+
+int main()
+{
+
+      inisialisasi();
+      menu();
+      
+}
+
+//referensi www.nblognlife.com
