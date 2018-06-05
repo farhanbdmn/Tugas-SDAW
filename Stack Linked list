@@ -1,0 +1,153 @@
+#include<iostream>
+
+using namespace std;
+
+struct node {
+	
+	int data;
+	node *next;
+
+};
+
+node *top=NULL, *bottom, *entry, *temporary;
+
+int JumData() {
+	int Jumlah=0;
+	temporary=top;
+	while (temporary != NULL) {
+		temporary = temporary -> next;
+		Jumlah ++;
+	}
+	
+	return Jumlah;
+}
+
+bool IsEmpty () {
+	if (top == NULL) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool IsFull() {
+	if (JumData() == 10) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void Push() {
+	int a;
+	if (IsFull()) {
+		cout<< "\n Data Penuh" <<endl;
+	}
+	else {
+		cout<< "\n Input data : "; cin>> a;
+		entry = new node;
+		entry -> data = a;
+		entry -> next = NULL;
+		if (top == NULL) {
+			top = entry;
+			bottom = entry;
+		} else {
+			entry -> next = top;
+			top = entry;
+		}
+	}
+}
+
+void Pop() {
+	if (IsEmpty()) {
+		cout<< "\n Tidak ada data" <<endl;
+	}
+	else {
+		temporary = top;
+		top = temporary->next;
+		cout<< "\n Data " << temporary -> data << "dihapus" <<endl;
+		delete temporary;
+	}
+}
+
+void Clear() {
+	if (IsEmpty()) {
+		cout<< "\n Tidak ada data" <<endl;
+	}
+	else {
+		temporary = top;
+		while (temporary != NULL) {
+			top = temporary -> next;
+			delete temporary;
+			temporary = top;
+		}
+	}
+}
+
+void Read() {
+	if (IsEmpty()){
+		cout<< "\n Tidak ada data" <<endl;
+	}
+	else{
+		temporary = top;
+		cout<< "\n Data yang ada di dalam stack : ";
+		while (temporary != NULL){
+			cout<< temporary -> data << " -> ";
+			temporary = temporary -> next;
+		}
+		cout << "NULL";
+		cout << endl;
+	}
+}
+
+void menu() {
+	char Ulang;
+	int pilih;
+	do {
+	system("cls");
+	cout<< "-------------------------" <<endl;
+	cout<< "Program stack linked list" <<endl;
+	cout<< "-------------------------" <<endl;
+	cout<< "1. Masukkan Data" <<endl;
+	cout<< "2. Tampilkan Data" <<endl;
+	cout<< "3. Jumlah Data" <<endl;
+	cout<< "4. Hapus Data" <<endl;
+	cout<< "5. Hapus Seluruh Data" <<endl;
+	cout<< "6. Exit" << endl <<endl;
+	cout<< "Masukkan pilihan : ";
+	cin>> pilih;
+	cout<<endl;
+	
+	switch(pilih){
+		case 1 : 
+			Push();
+			break;
+		case 2 :
+			Read();
+			break;
+		case 3 :
+			cout << "Jumlah Data = " << JumData() <<endl;
+			break;
+		case 4 :
+			Pop();
+			break;
+		case 5 :
+			Clear();
+			break;
+		case 6 :
+			exit(0);
+			break;
+		default : 
+			cout << "Inputan salah, coba lagi" <<endl;
+			}
+		cout<<endl;
+      	cout<<"Kembali ke menu? (y/n)";
+      	cin>>Ulang;
+	} while (Ulang=='y' || Ulang=='Y');
+}
+
+int main() {
+	
+	menu();
+	
+}
