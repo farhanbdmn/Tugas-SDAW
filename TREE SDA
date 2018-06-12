@@ -1,0 +1,136 @@
+#include <iostream>
+#include <conio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+typedef short typeData;
+typedef struct Node tree;
+
+struct Node{
+	short data;
+	Node *kiri, *kanan;
+} *root, *bantu, *bantu1, *baru;
+
+void buatNode();
+void tambahNode();
+bool isEmpty();
+void preOrder(Node *bantu2);
+void inOrder(Node *bantu2);
+void postOrder(Node *bantu2);
+
+int main() {
+	short pilih;
+	do{
+	cout<< "-------------------------------------" <<endl;
+	cout<< "|         TREE STRUKTUR DATA        |" <<endl;
+	cout<< "-------------------------------------" <<endl;
+	cout<< "| 1. Tambah Node                    |" <<endl;
+	cout<< "| 2. Tampil (Preorder)              |" <<endl;
+	cout<< "| 3. Tampil (Inorder)               |" <<endl;
+	cout<< "| 4. Tampil (Postorder)             |" <<endl;
+	cout<< "| 5. Exit                           |" <<endl;
+	cout<< "-------------------------------------" <<endl <<endl;
+	
+	cout<< "Pilih menu yang anda inginkan : " ; cin>>pilih;
+	cout <<endl;
+	
+	switch(pilih) {
+		case 1 :
+		tambahNode();
+		break;
+		
+		case 2	:
+		cout << "Isi yang ada pada tree : ";
+		preOrder(root);
+		cout <<endl <<endl;
+		break;
+		
+		case 3 :
+		cout << "Isi yang ada pada tree : ";
+		inOrder(root);
+		cout <<endl <<endl;
+		break;
+		
+		case 4	:
+		cout << "Isi yang ada pada tree : ";
+		postOrder(root);
+		cout <<endl <<endl;
+		break;
+		
+		default : cout << "Pilihan tidak ada" <<endl;
+		}
+		cout <<endl;
+		
+	} while (pilih != 5);
+}
+
+void buatNode() {
+	short nilai;
+	cout << "Masukkan nilai : "; cin >> nilai;
+	baru = new Node;
+	baru -> data = nilai;
+	baru -> kiri = NULL;
+	baru -> kanan = NULL;
+}
+
+bool isEmpty() {
+	if (root == NULL)
+	return true;
+	else
+	return false;
+}
+
+void tambahNode() {
+	buatNode();
+	if(isEmpty()) {
+		root = baru;
+		cout<<"Data berhasil di masukkan :)"<<endl <<endl;
+	} else {
+		bantu = root;
+		bantu1 = root;
+		while(( bantu != NULL) && (baru->data != bantu1->data)) {
+			bantu1 = bantu;
+			if(baru->data < bantu1->data){
+			bantu = bantu1->kiri;
+			} else{
+			bantu = bantu1->kanan;
+			}
+		}
+		
+		if (baru->data == bantu1->data) {
+		cout<<"Data sudah ada !"<<endl <<endl;
+		} else {
+			if (baru->data < bantu1->data) {
+			bantu1->kiri = baru;
+			} else {
+			bantu1->kanan = baru;
+			}
+			cout<<"Data berhasil di masukkan :)"<<endl <<endl;
+		}
+	}
+}
+
+void preOrder (Node *bantu2) {
+	if (bantu2 != NULL) {
+	cout << bantu2 -> data << " ";
+	preOrder(bantu2 -> kiri);
+	preOrder(bantu2 -> kanan);
+	}
+}
+
+void inOrder (Node *bantu2) {
+	if (bantu2 != NULL){
+	inOrder(bantu2->kiri);
+	cout<<bantu2->data<<" ";
+	inOrder(bantu2->kanan);
+	}
+}
+
+void postOrder (Node *bantu2) {
+	if (bantu2 != NULL){
+	postOrder(bantu2->kiri);
+	postOrder(bantu2->kanan);
+	cout<<bantu2->data<<" ";
+	}
+}
